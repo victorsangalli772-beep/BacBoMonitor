@@ -17,7 +17,7 @@ jobs:
           unzip -q BacBoMonitor_Android_CORRIGIDO.zip -d project
 
       - name: Configurar Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
@@ -27,7 +27,7 @@ jobs:
 
       - name: Instalar SDK
         run: |
-          yes | sdkmanager --licenses
+          yes | sdkmanager --licenses > /dev/null || true
           sdkmanager "platforms;android-35" "build-tools;35.0.0"
 
       - name: Instalar Gradle
@@ -35,9 +35,16 @@ jobs:
         with:
           gradle-version: '8.10'
 
+      - name: Verificar projeto
+        working-directory: project
+        run: |
+          ls -la
+          ls -la app
+
       - name: Compilar APK
         working-directory: project
-        run: gradle assembleDebug
+        run: |
+          gradle assembleDebug --stacktrace
 
       - name: Disponibilizar APK
         uses: actions/upload-artifact@v4
