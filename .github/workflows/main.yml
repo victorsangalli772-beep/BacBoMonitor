@@ -13,8 +13,8 @@ jobs:
 
       - name: Extrair projeto
         run: |
-          mkdir project
-          unzip BacBoMonitor_Android_CORRIGIDO.zip -d project
+          mkdir -p project
+          unzip -q BacBoMonitor_Android_CORRIGIDO.zip -d project
 
       - name: Configurar Java
         uses: actions/setup-java@v4
@@ -26,7 +26,9 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Instalar SDK
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+        run: |
+          yes | sdkmanager --licenses || true
+          sdkmanager "platforms;android-35" "build-tools;35.0.0"
 
       - name: Instalar Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -41,4 +43,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: BacBoMonitor-APK
-          path: project/app/build/outputs/apk/debug/app-debug.apk
+          path: project/**/build/outputs/apk/debug/*.apk
