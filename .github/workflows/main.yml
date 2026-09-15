@@ -11,7 +11,7 @@ jobs:
       - name: Baixar projeto
         uses: actions/checkout@v4
 
-      - name: Preparar projeto
+      - name: Extrair projeto
         run: |
           mkdir project
           unzip BacBoMonitor_Android_CORRIGIDO.zip -d project
